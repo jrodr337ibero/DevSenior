@@ -27,6 +27,6 @@ class ConexionDB:
             except Error as ex:
                 print('Error de conexion a la base de datos')
     
-    def get_conexion(self):
+    def     get_conexion(self):
         return self._conexion if self._conexion.is_connected() else None
         

@@ -1,7 +1,10 @@
 from model.entidades.estudiante import Estudiante
 from model.estudiante_model import EstudianteModel
+from tkinter import messagebox, ttk
 
 class EstudianteController:
+    def __init__(self):
+        self.model = EstudianteModel()
     
     def registrar_estudiante(self, nombre, correo, fecha_nacimiento):
         id = None
@@ -10,20 +13,18 @@ class EstudianteController:
         
         estudiante_id = self.model.crear_estudiante()
         if estudiante_id:
-            self.view.mostrar_mensaje("Estudiante registrado con éxito")
+            messagebox.showinfo("Estudiante guardado", f"El estudiante '{nombre}' fue guardado correctamente.")
     
     def listar_estudiantes(self):
         estudiantes = self.model.obtener_estudiantes()
-        self.view.mostrar_estudiantes(estudiantes)
+        return estudiantes
     
-    def buscar_estudiante(self):
-        id_estudiante = self.view.pedir_id_estudiante()
-        if id_estudiante:
-            estudiante = self.model.obtener_estudiante_por_id(id_estudiante)
-            if estudiante:
-                self.view.mostrar_estudiante(estudiante)
-            else:
-                self.view.mostrar_mensaje("Estudiante no encontrado")
+    def buscar_estudiante(self, nombre):
+        if nombre:
+            estudiante = self.model.obtener_estudiante_por_nombre(nombre)
+            if not len(estudiante):
+                messagebox.showinfo("Buscar", f"No se encontraron datos con el filtro de busqueda -> '{nombre}'")
+            return estudiante
     
     def reporte_cursos_estudiante(self):
         id_estudiante = self.view.pedir_id_estudiante()

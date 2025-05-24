@@ -1,42 +1,36 @@
-from model.database.conexion_db import ConexionDB
 from model.entidades.estudiante import Estudiante
+from model.database.execute_queries_db import EjecutarDb
 class EstudianteModel:
     def __init__(self, estudiante = Estudiante):
-        self.db = ConexionDB()
         self.estudiante = estudiante
-        self.connection = self.db.get_conexion()
+        
     
     def crear_estudiante(self):
-        query = "INSERT INTO estudiantes (nombre, correo, fecha_nacimiento) VALUES (%s, %s, %s)"
-        cursor = self.connection.cursor()
         try:
-            cursor.execute(query, (self.estudiante.nombre, 
-                                   self.estudiante.correo, 
-                                   self.estudiante.fecha_nacimiento
-                                   ))
-            
-            self.connection.commit()
-            return cursor.lastrowid
+            self.cursor = EjecutarDb()
+            query = "INSERT INTO estudiantes (nombre, correo, fecha_nacimiento) VALUES (%s, %s, %s)"
+            params = (self.estudiante.nombre, self.estudiante.correo,self.estudiante.fecha_nacimiento)
+            self.cursor.insert(query, params)
+            return "ok"
         except Exception as e:
             print(f"Error al crear estudiante: {e}")
             return None
     
     def obtener_estudiantes(self):
-        query = "SELECT * FROM estudiantes"
-        cursor = self.connection.cursor(dictionary=True)
         try:
-            cursor.execute(query)
-            return cursor.fetchall()
+            self.cursor = EjecutarDb()
+            query = "SELECT * FROM estudiantes"
+            response = self.cursor.consultar(query)
+            return response
         except Exception as e:
             print(f"Error al obtener estudiantes: {e}")
-            return []
     
-    def obtener_estudiante_por_id(self, id_estudiante):
-        query = "SELECT * FROM estudiantes WHERE id_estudiante = %s"
-        cursor = self.connection.cursor(dictionary=True)
+    def obtener_estudiante_por_nombre(self, nombre):
         try:
-            cursor.execute(query, (id_estudiante,))
-            return cursor.fetchone()
+            self.cursor = EjecutarDb()
+            query = "SELECT * FROM estudiantes WHERE nombre = %s"
+            params = (nombre,)
+            return self.cursor.consultar(query, params)
         except Exception as e:
             print(f"Error al obtener estudiante: {e}")
             return None

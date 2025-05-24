@@ -1,8 +1,12 @@
-from controller.estudiante_controller import EstudianteController 
+from view.gestion_cursos import GestionCursos
+import tkinter as tk
+from tkinter import ttk, messagebox
+
 
 def main():
-    estudiante = EstudianteController()
-    estudiante.registrar_estudiante('jhon sebastian', 'jhon@gmail.com', '2000-08-08')
+    root = tk.Tk()
+    GestionCursos(root, ttk, messagebox)
+    root.mainloop()
 
 
 
