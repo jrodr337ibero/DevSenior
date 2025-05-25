@@ -14,16 +14,9 @@ class EjecutarDb:
         finally:
             self.cursor.close()
             
-    def consultar(self, query: str):
+    def consultar(self, query: str, params = None):
         try:
-            self.cursor.execute(query)
-            return self.cursor.fetchall()
-        finally:
-            self.cursor.close()
-            
-    def consultar(self, query, nombre: tuple):
-        try:
-            self.cursor.execute(query, (nombre))
+            self.cursor.execute(query, params)
             return self.cursor.fetchall()
         finally:
             self.cursor.close()

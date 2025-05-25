@@ -208,7 +208,9 @@ class GestionCursos:
         
     def data_grid_mostrar_estudiantes(self):
         
-        if self.nombre_var is not None:
+        nombre = self.nombre_var.get()
+        print(nombre)
+        if self.nombre_var.get() != '':
             response = self.estudiante_controller.buscar_estudiante(self.nombre_var.get())
         else:
             response = self.estudiante_controller.listar_estudiantes()
