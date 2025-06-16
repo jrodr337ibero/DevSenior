@@ -12,3 +12,10 @@ RETO_4-5/model/database/__pycache__/conexion_db.cpython-311.pyc
 RETO_4-5/model/entidades/__pycache__/estudiante.cpython-311.pyc
 RETO_4-5/view/__pycache__/gestion_cursos.cpython-311.pyc
 RETO_4-5/model/database/__pycache__/execute_queries_db.cpython-311.pyc
+RETO_4-5/controller/__pycache__/curso_controller.cpython-311.pyc
+RETO_4-5/__pycache__/main.cpython-311.pyc
+RETO_4-5/controller/__pycache__/profesor_controller.cpython-311.pyc
+RETO_4-5/model/__pycache__/curso_model.cpython-311.pyc
+RETO_4-5/model/__pycache__/profesor_model.cpython-311.pyc
+RETO_4-5/model/entidades/__pycache__/curso.cpython-311.pyc
+RETO_4-5/model/entidades/__pycache__/profesor.cpython-311.pyc

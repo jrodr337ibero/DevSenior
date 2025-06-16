@@ -1,6 +1,11 @@
+from dataclasses import dataclass
+
+@dataclass
 class Profesor:
-    def __init__(self, id = None, nombre = None, correo = None, especialidad = None):
-      self.id = id
-      self.nombre = nombre
-      correo = correo
-      especialidad = especialidad
+    idProfesor: int
+    identificacionProfesor: str
+    nombreProfesor: str
+    apellidoProfesor: str
+    correoPersonal: str
+    correoInstitucional: str
+    especialidad: str

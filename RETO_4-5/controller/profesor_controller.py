@@ -1,21 +1,31 @@
-from models.profesor_model import ProfesorModel
-from views.profesor_view import ProfesorView
+from model.entidades.profesor import Profesor
+from model.profesor_model import ProfesorModel
+from tkinter import messagebox
 
 class ProfesorController:
+    def __init__(self):
+        self.model = ProfesorModel()
     
-    def registrar_profesor(self):
-        nombre, apellido, email, telefono, especialidad = self.view.obtener_datos_profesor()
-        if nombre and apellido and email:
-            profesor_id = self.model.crear_profesor(nombre, apellido, email, telefono, especialidad)
-            if profesor_id:
-                self.view.mostrar_mensaje("Profesor registrado con éxito")
+    def registrar_profesor(self, identificacionProfesor, nombreProfesor, apellidoProfesor, correoPersonal, 
+                           correoInstitucional, 
+                           especialidad):
+        insert_estudiante = Profesor(None,
+                                     identificacionProfesor,
+                                     nombreProfesor, 
+                                     apellidoProfesor, 
+                                     correoPersonal, 
+                                     correoInstitucional, 
+                                     especialidad)
+        self.model = ProfesorModel(insert_estudiante)
+        
+        docente_id = self.model.crear_profesor()
+        if docente_id:
+            messagebox.showinfo("Docente guardado", f"El docente '{nombreProfesor} {apellidoProfesor}' fue guardado correctamente.")
     
-    def listar_profesores(self):
-        profesores = self.model.obtener_profesores()
-        self.view.mostrar_profesores(profesores)
+    def cargar_drop_docente(self) -> list:
+        return self.model.lista_docentes()
     
-    def reporte_cursos_profesor(self):
-        id_profesor = self.view.pedir_id_profesor()
-        if id_profesor:
-            cursos = self.model.obtener_cursos_profesor(id_profesor)
-            self.view.mostrar_cursos_profesor(cursos)
+    def consultar_docente_curso(self):
+        return self.model.consultar_docentes()
+            
+    

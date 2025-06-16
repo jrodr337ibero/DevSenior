@@ -1,22 +1,27 @@
 from model.database.conexion_db import ConexionDB
 from model.entidades.profesor import Profesor
+from model.database.execute_queries_db import EjecutarDb
+from dataclasses import astuple
 
 class ProfesorModel:
     def __init__(self, profesor = Profesor):
-        self.db = ConexionDB()
         self.profesor = profesor
-        self.connection = self.db.get_conexion()
+        self.cursor = EjecutarDb()
     
     def crear_profesor(self):
-        query = "INSERT INTO profesores (nombre, correo, especialidad) VALUES (%s, %s, %s)"
-        cursor = self.connection.cursor()
+        
+        query = """INSERT INTO profesores (
+                    idProfesor,
+                    identificacionProfesor, 
+                    nombreProfesor, 
+                    apellidoProfesor, 
+                    correoPersonal, 
+                    correoInstitucional, 
+                    especialidad) VALUES (%s, %s, %s, %s, %s, %s, %s)"""
         try:
-            cursor.execute(query, (self.profesor.nombre, 
-                                   self.profesor.correo,
-                                   self.profesor.especialidad
-                                   ))
-            self.connection.commit()
-            return cursor.lastrowid
+            datos_docente = astuple(self.profesor)
+            self.cursor.insert(query, datos_docente)
+            return "ok"
         except Exception as e:
             print(f"Error al crear profesor: {e}")
             return None
@@ -50,3 +55,22 @@ class ProfesorModel:
         except Exception as e:
             print(f"Error al obtener cursos del profesor: {e}")
             return []
+        
+    def lista_docentes(self):
+        try:
+            query = "SELECT idProfesor, nombreProfesor FROM profesores"
+            return self.cursor.consultar(query)
+        except Exception as ex:
+            print("Error en lista_docentes")
+            
+    def consultar_docentes(self):
+        try:
+            query = """SELECT P.idProfesor, identificacionProfesor, nombreProfesor, apellidoProfesor, correoPersonal, correoInstitucional
+                        especialidad, descripcionCurso
+                        FROM Profesores P
+                        JOIN Cursos C ON C.idProfesor = P.idProfesor"""
+            return self.cursor.consultar(query)
+        except Exception as ex:
+            print("Error en consultar_docentes")
+        
+        

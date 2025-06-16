@@ -1,22 +1,19 @@
 from model.database.conexion_db import ConexionDB
 from model.entidades.curso import Curso
+from model.database.execute_queries_db import EjecutarDb
 
 class CursoModel:
     def __init__(self, curso = Curso):
         self.db = ConexionDB()
         self.connection = self.db.get_conexion()
         self.curso = curso
+        self.cursor = EjecutarDb()
         
     def crear_curso(self):
-        query = "INSERT INTO cursos (nombre, descripcion, id_profesor) VALUES (%s, %s, %s)"
-        cursor = self.connection.cursor()
+        query = "INSERT INTO cursos (descripcionCurso, idProfesor) VALUES (%s, %s)"
         try:
-            cursor.execute(query, (self.curso.nombre,
-                                   self.curso.descripcion,
-                                   self.curso.id_profesor
-                                   ))
-            self.connection.commit()
-            return cursor.lastrowid
+            params = (self.curso.descripcionCurso, self.curso.idProfesor)
+            return self.cursor.insert(query, params)
         except Exception as e:
             print(f"Error al crear curso: {e}")
             return None
