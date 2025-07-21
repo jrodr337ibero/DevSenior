@@ -8,8 +8,19 @@ class EstudianteModel:
     def crear_estudiante(self):
         try:
             self.cursor = EjecutarDb()
-            query = "INSERT INTO estudiantes (nombre, correo, fecha_nacimiento) VALUES (%s, %s, %s)"
-            params = (self.estudiante.nombre, self.estudiante.correo,self.estudiante.fecha_nacimiento)
+            query = """INSERT INTO estudiantes (identificacionEstudiante, 
+                                                nombreEstudiante, 
+                                                apellidoEstudiante,
+                                                fechaNacimientoEstudiante,
+                                                correoPersonalEstudiante,
+                                                correoInstitucionalEstudiante
+                                                ) VALUES (%s, %s, %s, %s, %s, %s)"""
+            params = (self.estudiante.identificacionEstudiante, 
+                      self.estudiante.nombreEstudiante,
+                      self.estudiante.apellidoEstudiante,
+                      self.estudiante.fechaNacimientoEstudiante,
+                      self.estudiante.correoPersonalEstudiante,
+                      self.estudiante.correoInstitucionalEstudiante)
             self.cursor.insert(query, params)
             return "ok"
         except Exception as e:

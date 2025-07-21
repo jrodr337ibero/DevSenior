@@ -19,3 +19,6 @@ RETO_4-5/model/__pycache__/curso_model.cpython-311.pyc
 RETO_4-5/model/__pycache__/profesor_model.cpython-311.pyc
 RETO_4-5/model/entidades/__pycache__/curso.cpython-311.pyc
 RETO_4-5/model/entidades/__pycache__/profesor.cpython-311.pyc
+RETO_4-5/controller/__pycache__/horario_controller.cpython-311.pyc
+RETO_4-5/model/__pycache__/horario_model.cpython-311.pyc
+RETO_4-5/model/entidades/__pycache__/horario.cpython-311.pyc

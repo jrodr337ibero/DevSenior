@@ -15,4 +15,12 @@ class CursoController:
             self.model = CursoModel(insert_curso)
             self.model.crear_curso()
             messagebox.showinfo("Info", f"Curso creado con exito")
+            
+    def cargar_drop_curso(self) -> list:
+        return self.model.lista_cursos()
     
+    def cargar_drop_semanas(self) -> list:
+        return self.model.lista_semanas()
+    
+    def cargar_drop_horas(self) -> list:
+        return self.model.lista_horas()

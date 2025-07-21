@@ -1,4 +1,4 @@
-drop database academia;
+#drop database academia;
 CREATE DATABASE IF NOT EXISTS academia;
 USE academia;
 
@@ -9,7 +9,7 @@ CREATE TABLE Estudiantes (
     apellidoEstudiante VARCHAR(100),
     fechaNacimientoEstudiante DATE,
     correoPersonalEstudiante VARCHAR(100),
-    correoInstitucionalEstuadiante varchar(100)
+    correoInstitucionalEstudiante varchar(100)
 );
 
 CREATE TABLE Profesores (
@@ -68,3 +68,35 @@ INSERT INTO semana (idSemana,diaSemana) VALUES(5,'Viernes');
 INSERT INTO semana (idSemana,diaSemana) VALUES(6,'Sabado');
 INSERT INTO semana (idSemana,diaSemana) VALUES(7,'Domingo');
 
+
+
+INSERT INTO hora (Hora) VALUES
+('08:00:00'),
+('08:30:00'),
+('09:00:00'),
+('09:30:00'),
+('10:00:00'),
+('10:30:00'),
+('11:00:00'),
+('11:30:00'),
+('12:00:00'),
+('12:30:00'),
+('13:00:00'),
+('13:30:00'),
+('14:00:00'),
+('14:30:00'),
+('15:00:00'),
+('15:30:00'),
+('16:00:00'),
+('16:30:00'),
+('17:00:00'),
+('17:30:00'),
+('18:00:00'),
+('18:30:00'),
+('19:00:00'),
+('19:30:00'),
+('20:00:00'),
+('20:30:00'),
+('21:00:00'),
+('21:30:00'),
+('22:00:00');

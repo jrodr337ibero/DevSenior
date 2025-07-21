@@ -1,6 +1,16 @@
 class Estudiante:
-    def __init__(self, id = None, nombre = None, correo = None, fecha_nacimiento = None):
-        self.id = id
-        self.nombre = nombre
-        self.correo = correo
-        self.fecha_nacimiento = fecha_nacimiento 
+    def __init__(self, idEstudiante, 
+                       identificacionEstudiante,
+                       nombreEstudiante, 
+                       apellidoEstudiante, 
+                       fechaNacimientoEstudiante, 
+                       correoPersonalEstudiante, 
+                       correoInstitucionalEstudiante):
+        self.idEstudiante = idEstudiante
+        self.identificacionEstudiante = identificacionEstudiante
+        self.nombreEstudiante = nombreEstudiante
+        self.apellidoEstudiante = apellidoEstudiante
+        self.fechaNacimientoEstudiante = fechaNacimientoEstudiante
+        self.correoPersonalEstudiante = correoPersonalEstudiante
+        self.correoInstitucionalEstudiante = correoInstitucionalEstudiante
+        
