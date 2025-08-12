@@ -21,10 +21,13 @@ class ProfesorModel:
         try:
             datos_docente = astuple(self.profesor)
             self.cursor.insert(query, datos_docente)
-            return "ok"
+            return {"estado":True}
         except Exception as e:
             print(f"Error al crear profesor: {e}")
-            return None
+            return {
+                "estado":False,
+                "mensaje":str(e)
+            }
     
     def obtener_profesores(self):
         query = "SELECT * FROM profesores"
@@ -65,8 +68,15 @@ class ProfesorModel:
             
     def consultar_docentes(self):
         try:
-            query = """SELECT P.idProfesor, identificacionProfesor, nombreProfesor, apellidoProfesor, correoPersonal, correoInstitucional
-                        especialidad, descripcionCurso
+            self.cursor = EjecutarDb()
+            query = """SELECT P.idProfesor, 
+                              identificacionProfesor, 
+                              nombreProfesor, 
+                              apellidoProfesor, 
+                              correoPersonal, 
+                              correoInstitucional
+                              especialidad, 
+                              descripcionCurso
                         FROM Profesores P
                         JOIN Cursos C ON C.idProfesor = P.idProfesor"""
             return self.cursor.consultar(query)

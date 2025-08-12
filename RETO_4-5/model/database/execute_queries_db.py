@@ -17,7 +17,8 @@ class EjecutarDb:
     def consultar(self, query: str, params = None):
         try:
             self.cursor.execute(query, params)
-            return self.cursor.fetchall()
+            response = self.cursor.fetchall()
+            return response
         finally:
             self.cursor.close()
             

@@ -9,18 +9,23 @@ class ProfesorController:
     def registrar_profesor(self, identificacionProfesor, nombreProfesor, apellidoProfesor, correoPersonal, 
                            correoInstitucional, 
                            especialidad):
-        insert_estudiante = Profesor(None,
+        try:
+            insert_estudiante = Profesor(None,
                                      identificacionProfesor,
                                      nombreProfesor, 
                                      apellidoProfesor, 
                                      correoPersonal, 
                                      correoInstitucional, 
                                      especialidad)
-        self.model = ProfesorModel(insert_estudiante)
+            self.model = ProfesorModel(insert_estudiante)
         
-        docente_id = self.model.crear_profesor()
-        if docente_id:
-            messagebox.showinfo("Docente guardado", f"El docente '{nombreProfesor} {apellidoProfesor}' fue guardado correctamente.")
+            response = self.model.crear_profesor()
+            if response.get('estado'):
+                messagebox.showinfo("Docente guardado", f"El docente '{nombreProfesor} {apellidoProfesor}' fue guardado correctamente.")
+            else:
+                messagebox.showinfo("Error", f"No fue posible crear el registro del docente {response.get('mensaje')}")
+        except Exception as e:
+            messagebox.showinfo(f"Error al crear el docente {str(e)}")
     
     def cargar_drop_docente(self) -> list:
         return self.model.lista_docentes()

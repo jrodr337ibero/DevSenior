@@ -4,6 +4,7 @@ from controller.estudiante_controller import EstudianteController
 from controller.profesor_controller import ProfesorController
 from controller.curso_controller import CursoController
 from controller.horario_controller import HorarioController
+from tkinter import messagebox
 
 class GestionCursos:
     def __init__(self, root, ttk, messagebox):
@@ -395,15 +396,9 @@ class GestionCursos:
             font=("Arial", 11, 'bold'),
             bg="#27ae60", fg="white",
             padx=10, pady=5,
-            command=lambda: self.profesor_controller.registrar_profesor(self.identificacion_var.get(), 
-                                                                        self.nombre_var.get(), 
-                                                                        self.apellido_var.get(), 
-                                                                        self.correo_personal_var.get(), 
-                                                                        self.correo_institucional_var.get(), 
-                                                                        self.especialidad_var.get())
+            command=lambda: self.insert_docentes()
         )
         self.boton_agregar.grid(row=7, column=0, columnspan=2, pady=(20, 30))
-
         self.notebook.add(frame, text="Datos del Docente")
         self.notebook.select(frame)
 
@@ -526,15 +521,19 @@ class GestionCursos:
         else:
             response = self.profesor_controller.consultar_docente_curso()
             
-        self.dataGrid =  ttk.Treeview(self.frame, columns=("identificacionProfesor", 
-                                                              "nombreProfesor",
-                                                              "correoInstitucional",
-                                                              "descripcionCurso"), show="headings")
-        self.dataGrid.heading("identificacionProfesor", text="Identificación")
-        self.dataGrid.heading("nombreProfesor", text="Nombre")
-        self.dataGrid.heading("correoInstitucional", text="Correo Institucional")
-        self.dataGrid.heading("descripcionCurso", text="Descripción Curso")
-        self.dataGrid.grid(row=3, column=0, columnspan=2)
+        if len(response) > 0:
+            
+            self.dataGrid =  ttk.Treeview(self.frame, columns=("identificacionProfesor", 
+                                                                "nombreProfesor",
+                                                                "correoInstitucional",
+                                                                "descripcionCurso"), show="headings")
+            self.dataGrid.heading("identificacionProfesor", text="Identificación")
+            self.dataGrid.heading("nombreProfesor", text="Nombre")
+            self.dataGrid.heading("correoInstitucional", text="Correo Institucional")
+            self.dataGrid.heading("descripcionCurso", text="Descripción Curso")
+            self.dataGrid.grid(row=3, column=0, columnspan=2)
+        else:
+            messagebox.showinfo("Consulta", "En el momento no se encuentran docentes registrados a un curso.")
         
         for item in self.dataGrid.get_children():
             self.dataGrid.delete(item)
@@ -625,10 +624,27 @@ class GestionCursos:
                                                         self.correo_institucional_var.get())
         self.limpiar_campos()
         
+    def insert_docentes(self):
+        self.profesor_controller.registrar_profesor(self.identificacion_var.get(), 
+                                                                        self.nombre_var.get(), 
+                                                                        self.apellido_var.get(), 
+                                                                        self.correo_personal_var.get(), 
+                                                                        self.correo_institucional_var.get(), 
+                                                                        self.especialidad_var.get())
+        self.limpiar_campos()
+        
     def limpiar_campos(self):
-        self.identificacion_var.set(''),
-        self.nombre_var.set(''), 
-        self.apellido_var.set(''),
-        self.fecha_nacimiento_var.set(''),
-        self.correo_personal_var.set(''),
-        self.correo_institucional_var.set('')
+        if hasattr(self, "identificacion_var"):
+            self.identificacion_var.set("")
+        if hasattr(self, "nombre_var"):
+            self.nombre_var.set("")
+        if hasattr(self, "apellido_var"):
+            self.apellido_var.set("")
+        if hasattr(self, "fecha_nacimiento_var"):
+            self.fecha_nacimiento_var.set("")
+        if hasattr(self, "correo_personal_var"):
+            self.correo_personal_var.set("")
+        if hasattr(self, "correo_institucional_var"):
+            self.correo_institucional_var.set("")
+        if hasattr(self, "especialidad_var"):
+            self.especialidad_var.set("")
