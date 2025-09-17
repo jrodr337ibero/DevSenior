@@ -39,9 +39,25 @@ class EstudianteModel:
     def obtener_estudiante_por_nombre(self, nombre):
         try:
             self.cursor = EjecutarDb()
-            query = "SELECT * FROM estudiantes WHERE nombre = %s"
+            query = "SELECT * FROM estudiantes WHERE nombreEstudiante = %s"
             params = (nombre,)
             return self.cursor.consultar(query, params)
+        except Exception as e:
+            print(f"Error al obtener estudiante: {e}")
+            return None
+        
+    def cargar_drop_estudiante_db(self):
+        try:
+            self.cursor = EjecutarDb()
+            query = """SELECT idEstudiante, 
+                              concat(nombreEstudiante, 
+                              ' ', apellidoEstudiante, 
+                              ' ', 
+                              '-', 
+                              identificacionEstudiante) 
+                              nombre
+                        FROM estudiantes"""
+            return self.cursor.consultar(query)
         except Exception as e:
             print(f"Error al obtener estudiante: {e}")
             return None

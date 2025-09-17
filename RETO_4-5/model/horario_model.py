@@ -45,3 +45,25 @@ class HorarioModel:
         except Exception as e:
             print(f"Error al obtener horarios del día: {e}")
             return []
+        
+    def horario_asignados_curso_db(self):
+        try:
+            self.cursor = EjecutarDb()
+            query = """
+                        SELECT 
+                            H.idHorario,
+                            C.descripcionCurso,
+                            HI.Hora AS HoraInicio,
+                            HF.Hora AS HoraFin
+                        FROM horarios H
+                        JOIN CURSOS C 
+                            ON C.idCurso = H.idCurso
+                        JOIN hora HI 
+                            ON HI.idHora = H.idHoraInicio
+                        JOIN hora HF 
+                            ON HF.idHora = H.idHoraFin
+                    """
+                       
+            return self.cursor.consultar(query)
+        except Exception as ex:
+            print("Error ")

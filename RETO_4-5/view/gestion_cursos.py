@@ -4,6 +4,7 @@ from controller.estudiante_controller import EstudianteController
 from controller.profesor_controller import ProfesorController
 from controller.curso_controller import CursoController
 from controller.horario_controller import HorarioController
+from controller.matricular_controller import MatriculaController
 from tkinter import messagebox
 
 class GestionCursos:
@@ -16,7 +17,7 @@ class GestionCursos:
         contenedor = tk.Frame(self.root, bg="#f0f2f5")
         contenedor.pack(fill='both', expand=True)
 
-        menu_frame = tk.Frame(contenedor, bg="#2c3e50", width=180)
+        menu_frame = tk.Frame(contenedor, bg="#2c3e50", width=200)
         menu_frame.pack(side="left", fill="y")
 
         self.main_frame = tk.Frame(contenedor, bg="white")
@@ -49,10 +50,16 @@ class GestionCursos:
         self.btn_docente.pack(fill="x", pady=2)
         self.btn_docente.bind("<Button-1>", self.submenu_docente)
         
+        self.btn_matriculas = tk.Button(menu_frame, text="Matriculas", **self.button_style)
+        self.btn_matriculas.pack(fill="x", pady=2)
+        self.btn_matriculas.bind("<Button-1>", self.submenu_matriculas)
+        
         self.menu_cursos = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Segoe UI", 10))
         self.menu_cursos.add_command(label="Agregar Curso", command=lambda: self.agregar_curso())
         self.menu_cursos.add_command(label="Listar Cursos", command=lambda: self._actualizar_contenido("Lista de Cursos"))
         self.menu_cursos.add_command(label="Asignar Horario", command=lambda: self.agregar_horario())
+        self.menu_cursos.add_command(label="Estudiantes en Curso", command=lambda: self.consultar_estudiante_en_curso())
+        self.menu_cursos.add_command(label="Consultar Horario", command=lambda: self.consultar_horario())
         
         self.menu_estudiante = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Sego UI", 10))
         self.menu_estudiante.add_command(label="Agregar Estudiante", command=lambda: self.agregar_estudiante())
@@ -61,6 +68,10 @@ class GestionCursos:
         self.menu_docente = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Sego UI", 10))
         self.menu_docente.add_command(label="Agregar Docente", command=lambda: self.agregar_docentes())
         self.menu_docente.add_command(label="Consultar Docente", command=lambda: self.consultar_docente())
+        
+        self.menu_matriculas = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Segoe UI", 10))
+        self.menu_matriculas.add_command(label="Matricular Estudiante", command=lambda: self.matricular_estudiante())
+        self.menu_matriculas.add_command(label="Eliminar Matriculas", command=lambda: self.eliminar_matriculas())
         
         tk.Button(menu_frame, text="Salir", command=self.root.destroy, **self.button_style).pack(fill="x", pady=2)
 
@@ -78,6 +89,7 @@ class GestionCursos:
         self.profesor_controller = ProfesorController()
         self.curso_controller = CursoController()
         self.horario_controller = HorarioController()
+        self.matricular_controller = MatriculaController()
         
         
     def submenu_curso(self, event=None):
@@ -94,6 +106,11 @@ class GestionCursos:
         x = self.btn_docente.winfo_rootx() + self.btn_docente.winfo_width()
         y = self.btn_docente.winfo_rooty()
         self.menu_docente.tk_popup(x, y)
+        
+    def submenu_matriculas(self, event=None):
+        x = self.btn_matriculas.winfo_rootx() + self.btn_matriculas.winfo_width()
+        y = self.btn_matriculas.winfo_rooty()
+        self.menu_matriculas.tk_popup(x, y)
 
     def mostrar_inicio(self):
         self._actualizar_contenido("Bienvenido al sistema de gestión")
@@ -510,8 +527,7 @@ class GestionCursos:
         self.boton_consultar.grid(row=4, column=0, columnspan=2, pady=(20, 30))
         self.notebook.add(self.frame, text="Consultar Docente")
         self.notebook.select(self.frame)
-        
-        
+                
     def data_grid_mostrar_docente(self):
     
         identificacion = self.identificacion_var.get()
@@ -632,6 +648,193 @@ class GestionCursos:
                                                                         self.correo_institucional_var.get(), 
                                                                         self.especialidad_var.get())
         self.limpiar_campos()
+        
+    def matricular_estudiante(self):
+        
+        for widget in self.notebook.winfo_children():
+            widget.destroy()
+
+        frame = tk.Frame(self.notebook, bg="white")
+        frame.columnconfigure(0, weight=0)
+        frame.columnconfigure(1, weight=1)
+
+        label = tk.Label(
+            frame, text='Matricular Estudiante',
+            font=("Segoe UI", 14, "bold"), bg="white", fg="#2c3e50"
+        )
+        label.grid(row=0, column=0, columnspan=2, pady=(40))
+
+        drop_estudiante = self.estudiante_controller.cargar_drop_estudiante()
+        self.diccionario_estudiante = dict(drop_estudiante)
+            
+        self.cb = ttk.Combobox(frame, values=list(self.diccionario_estudiante.values()), font=('Arial', 11), width=40)
+        self.cb.set("Seleccione estudiante")
+        self.cb.grid(row=2, column=1, padx=(240, 50), pady=10, sticky="w")
+        self.cb.bind("<<ComboboxSelected>>", self.seleccionar_estudiante)
+        self.id_estudiante = next((k for k, v in self.diccionario_estudiante.items() if v == self.cb.get()), None)
+        
+        drop_curso = self.curso_controller.cargar_drop_curso()
+        self.diccionario = dict(drop_curso)
+        
+        self.cb1 = ttk.Combobox(frame, values=list(self.diccionario.values()), font=('Arial', 11), width=40)
+        self.cb1.set("Seleccione curso")
+        self.cb1.grid(row=3, column=1, padx=(240, 50), pady=10, sticky="w")
+        self.cb1.bind("<<ComboboxSelected>>", self.seleccionar_curso)
+        self.id_curso = next((k for k, v in self.diccionario.items() if v == self.cb1.get()), None)
+        
+        self.boton_agregar = tk.Button(
+            frame,
+            text="Matricular Estudiane",
+            font=("Arial", 11, 'bold'),
+            bg="#27ae60", fg="white",
+            padx=10, pady=5,
+            command=lambda: self.matricular_controller.matricular_estudiante(self.id_estudiante, self.id_curso)
+        )
+        self.boton_agregar.grid(row=6, column=0, columnspan=2, pady=(20, 30))
+
+        self.notebook.add(frame, text="Matricular")
+        self.notebook.select(frame)
+        
+    def seleccionar_estudiante(self, event):
+        seleccion = self.cb.get()
+        self.id_estudiante = next((k for k, v in self.diccionario_estudiante.items() if v == seleccion), None)
+        
+    def consultar_estudiante_en_curso(self):
+        for widget in self.notebook.winfo_children():
+            widget.destroy()
+            
+        self.frame = tk.Frame(self.notebook, bg="white")
+        self.frame.columnconfigure(0, weight=0)
+        self.frame.columnconfigure(1, weight=1)
+        
+        label = tk.Label(
+            self.frame, text='Consultar Estudiantes en Curso',
+            font=("Segoe UI", 14, "bold"), bg="white", fg="#2c3e50"
+        )
+        label.grid(row=0, column=0, columnspan=2, pady=(40))
+        
+        self.boton_agregar = tk.Button(
+            self.frame,
+            text="Consultar",
+            font=("Arial", 11, 'bold'),
+            bg="#27ae60", fg="white",
+            padx=10, pady=5,
+            command=lambda: self.data_grid_mostrar_estudiantes_en_curso()
+        )
+        self.boton_agregar.grid(row=4, column=0, columnspan=2, pady=(20, 30))
+        self.notebook.add(self.frame, text="Consultar Estudiantes")
+        self.notebook.select(self.frame)
+        
+    def data_grid_mostrar_estudiantes_en_curso(self):
+        
+        response = self.curso_controller.estudiante_en_curso()
+            
+        self.estudiantes =  ttk.Treeview(self.frame, columns=("Curso", "identificacion Estudiante", 'Nombre Estudiante', 'Correo Institucional'), show="headings")
+        self.estudiantes.heading("Curso", text="Curso")
+        self.estudiantes.heading("identificacion Estudiante", text="identificacion Estudiante")
+        self.estudiantes.heading("Nombre Estudiante", text="Nombre Estudiante")
+        self.estudiantes.heading("Correo Institucional", text="Correo Institucional")
+        self.estudiantes.grid(row=4, column=0, columnspan=2)
+        
+        for item in self.estudiantes.get_children():
+            self.estudiantes.delete(item)
+        
+        for estudiante in response:
+            self.estudiantes.insert('', 'end', values=(
+                estudiante[0],
+                estudiante[1],
+                estudiante[2],
+                estudiante[3]
+            ))
+            
+    def consultar_horario(self):
+        for widget in self.notebook.winfo_children():
+            widget.destroy()
+            
+        self.frame = tk.Frame(self.notebook, bg="white")
+        self.frame.columnconfigure(0, weight=0)
+        self.frame.columnconfigure(1, weight=1)
+        
+        label = tk.Label(
+            self.frame, text='Consultar Horario',
+            font=("Segoe UI", 14, "bold"), bg="white", fg="#2c3e50"
+        )
+        label.grid(row=0, column=0, columnspan=2, pady=(40))
+        
+        self.boton_agregar = tk.Button(
+            self.frame,
+            text="Consultar",
+            font=("Arial", 11, 'bold'),
+            bg="#27ae60", fg="white",
+            padx=10, pady=5,
+            command=lambda: self.data_grid_mostrar_horario()
+        )
+        self.boton_agregar.grid(row=4, column=0, columnspan=2, pady=(20, 30))
+        self.notebook.add(self.frame, text="Consultar Horario")
+        self.notebook.select(self.frame)
+        
+    def data_grid_mostrar_horario(self):
+        
+        response = self.horario_controller.horario_asignados_curso()
+            
+        self.estudiantes =  ttk.Treeview(self.frame, columns=("id", "Descripcion Curso", 'Hora Inicio', 'Hora Fin'), show="headings")
+        self.estudiantes.heading("id", text="id")
+        self.estudiantes.heading("Descripcion Curso", text="Descripcion Curso")
+        self.estudiantes.heading("Hora Inicio", text="Hora Inicio")
+        self.estudiantes.heading("Hora Fin", text="Hora Fin")
+        self.estudiantes.grid(row=4, column=0, columnspan=2)
+        
+        for item in self.estudiantes.get_children():
+            self.estudiantes.delete(item)
+        
+        for estudiante in response:
+            self.estudiantes.insert('', 'end', values=(
+                estudiante[0],
+                estudiante[1],
+                estudiante[2],
+                estudiante[3]
+            ))
+            
+    def eliminar_matriculas(self):
+        
+        for widget in self.notebook.winfo_children():
+            widget.destroy()
+
+        frame = tk.Frame(self.notebook, bg="white")
+        frame.columnconfigure(0, weight=0)
+        frame.columnconfigure(1, weight=1)
+
+        label = tk.Label(
+            frame, text='Eliminar Matrículas',
+            font=("Segoe UI", 14, "bold"), bg="white", fg="#2c3e50"
+        )
+        label.grid(row=0, column=0, columnspan=2, pady=(40))
+
+        drop_matriculas = self.matricular_controller.cargar_drop_matriculas()
+        self.diccionario_matriculas = dict(drop_matriculas)
+            
+        self.cb = ttk.Combobox(frame, values=list(self.diccionario_matriculas.values()), font=('Arial', 11), width=40)
+        self.cb.set("Seleccione estudiante")
+        self.cb.grid(row=2, column=1, padx=(240, 50), pady=10, sticky="w")
+        self.cb.bind("<<ComboboxSelected>>", self.seleccionar_info_matricula)
+        self.id_matricula = next((k for k, v in self.diccionario_matriculas.items() if v == self.cb.get()), None)
+        
+        self.boton_agregar = tk.Button(
+            frame,
+            text="Eliminar Matricula",
+            font=("Arial", 11, 'bold'),
+            bg="#27ae60", fg="white",
+            padx=10, pady=5,
+            command=lambda: self.matricular_controller.eliminar_matricula(self.id_matricula)
+        )
+        self.boton_agregar.grid(row=6, column=0, columnspan=2, pady=(20, 30))
+
+        self.notebook.add(frame, text="Matricular")
+        self.notebook.select(frame)
+    
+    def seleccionar_info_matricula(self, event):
+        seleccion = self.cb.get()
+        self.id_matricula = next((k for k, v in self.diccionario_matriculas.items() if v == seleccion), None)
         
     def limpiar_campos(self):
         if hasattr(self, "identificacion_var"):

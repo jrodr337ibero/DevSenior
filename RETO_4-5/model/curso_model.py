@@ -65,3 +65,18 @@ class CursoModel:
             return self.cursor.consultar(query)
         except Exception as ex:
             print("Error ")
+            
+    def estudiantes_en_curso_db(self):
+        try:
+            self.cursor = EjecutarDb()
+            
+            query = """SELECT C.descripcionCurso, E.identificacionEstudiante, concat(E.nombreEstudiante, ' ', apellidoEstudiante) nombreEstudiante, E.correoInstitucionalEstudiante 
+                        FROM CURSOS C 
+                        JOIN matriculas M ON C.idCurso = M.idCurso
+                        JOIN estudiantes E ON E.idEstudiante = M.idEstudiante"""
+                       
+            return self.cursor.consultar(query)
+        except Exception as ex:
+            print("Error ")
+            
+        

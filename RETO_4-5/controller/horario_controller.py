@@ -22,3 +22,7 @@ class HorarioController:
             self.model = HorarioModel(insert_horario)
             self.model.agregar_horario()
             messagebox.showinfo("Info", f"Horario creado con exito")
+            
+    def horario_asignados_curso(self):
+        return self.model.horario_asignados_curso_db()
+        

@@ -8,11 +8,11 @@ class MatriculaModel:
         self.matricula = matricula
     
     def matricular_estudiante(self):
-        query = "INSERT INTO matriculas (id_estudiante, id_curso, fecha_matricula) VALUES (%s, %s, CURDATE())"
+        query = "INSERT INTO matriculas (idEstudiante, idCurso, fechaMatricula) VALUES (%s, %s, CURDATE())"
         cursor = self.connection.cursor()
         try:
-            cursor.execute(query, (self.matricula.id_estudiante,
-                                   self.matricula.id_curso
+            cursor.execute(query, (self.matricula.idEstudiante,
+                                   self.matricula.idCurso
                                    ))
             self.connection.commit()
             return cursor.lastrowid
@@ -50,13 +50,29 @@ class MatriculaModel:
             print(f"Error al obtener estudiantes del curso: {e}")
             return []
     
-    def eliminar_matricula(self, id_matricula):
-        query = "DELETE FROM matriculas WHERE id_matricula = %s"
+    def eliminar_matricula(self, idMatricula):
+        query = "DELETE FROM matriculas WHERE idMatricula = %s"
         cursor = self.connection.cursor()
         try:
-            cursor.execute(query, (id_matricula,))
+            cursor.execute(query, (idMatricula,))
             self.connection.commit()
             return True
+        except Exception as e:
+            print(f"Error al eliminar matrícula: {e}")
+            return False
+        
+    def cargar_drop_matriculas_db(self):
+        query = """
+                    SELECT M.idMatricula, 
+                    concat(C.descripcionCurso, ' - ', E.nombreEstudiante, ' ', apellidoEstudiante, ' - ', identificacionEstudiante) infoMatriculaEstudiante
+                    FROM CURSOS C 
+                    JOIN matriculas M ON C.idCurso = M.idCurso
+                    JOIN estudiantes E ON E.idEstudiante = M.idEstudiante
+                """
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(query)
+            return cursor.fetchall()
         except Exception as e:
             print(f"Error al eliminar matrícula: {e}")
             return False

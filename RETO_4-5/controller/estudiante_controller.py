@@ -15,7 +15,7 @@ class EstudianteController:
         if estudiante_id:
             messagebox.showinfo("Estudiante guardado", f"El estudiante '{nombre}' fue guardado correctamente.")
     
-    def listar_estudiantes(self):
+    def listar_estudiantes(self) -> list:
         estudiantes = self.model.obtener_estudiantes()
         return estudiantes
     
@@ -26,7 +26,5 @@ class EstudianteController:
                 messagebox.showinfo("Buscar", f"No se encontraron datos con el filtro de busqueda -> '{nombre}'")
             return estudiante
     
-    def reporte_cursos_estudiante(self):
-        id_estudiante = self.view.pedir_id_estudiante()
-        if id_estudiante:
-            pass
+    def cargar_drop_estudiante(self) -> list:
+        return self.model.cargar_drop_estudiante_db()
