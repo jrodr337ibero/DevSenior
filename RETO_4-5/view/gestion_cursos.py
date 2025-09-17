@@ -473,6 +473,13 @@ class GestionCursos:
         self.estudiantes.heading("Apellido", text="Apellido")
         self.estudiantes.heading("Fecha Nacimiento", text="Fecha Nacimiento")
         self.estudiantes.heading("Correo Personal", text="Correo Personal")
+        
+        self.estudiantes.column("Identificación", anchor="center")
+        self.estudiantes.column("Nombre", anchor="center")
+        self.estudiantes.column("Apellido", anchor="center")
+        self.estudiantes.column("Fecha Nacimiento", anchor="center")
+        self.estudiantes.column("Correo Personal", anchor="center")
+        
         self.estudiantes.grid(row=3, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
@@ -545,6 +552,11 @@ class GestionCursos:
             self.dataGrid.heading("nombreProfesor", text="Nombre")
             self.dataGrid.heading("correoInstitucional", text="Correo Institucional")
             self.dataGrid.heading("descripcionCurso", text="Descripción Curso")
+            
+            self.dataGrid.column("identificacionProfesor", anchor="center")
+            self.dataGrid.column("nombreProfesor", anchor="center")
+            self.dataGrid.column("correoInstitucional", anchor="center")
+            self.dataGrid.column("descripcionCurso", anchor="center")
             self.dataGrid.grid(row=3, column=0, columnspan=4)
         else:
             messagebox.showinfo("Consulta", "En el momento no se encuentran docentes registrados a un curso.")
@@ -732,6 +744,11 @@ class GestionCursos:
         self.estudiantes.heading("identificacion Estudiante", text="identificacion Estudiante")
         self.estudiantes.heading("Nombre Estudiante", text="Nombre Estudiante")
         self.estudiantes.heading("Correo Institucional", text="Correo Institucional")
+        
+        self.estudiantes.column("Curso", anchor="center")
+        self.estudiantes.column("identificacion Estudiante", anchor="center")
+        self.estudiantes.column("Nombre Estudiante", anchor="center")
+        self.estudiantes.column("Correo Institucional", anchor="center")
         self.estudiantes.grid(row=5, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
@@ -780,6 +797,12 @@ class GestionCursos:
         self.estudiantes.heading("Descripcion Curso", text="Descripcion Curso")
         self.estudiantes.heading("Hora Inicio", text="Hora Inicio")
         self.estudiantes.heading("Hora Fin", text="Hora Fin")
+        
+        self.estudiantes.column("id", anchor="center")
+        self.estudiantes.column("Descripcion Curso", anchor="center")
+        self.estudiantes.column("Hora Inicio", anchor="center")
+        self.estudiantes.column("Hora Fin", anchor="center")
+        
         self.estudiantes.grid(row=5, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
