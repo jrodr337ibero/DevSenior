@@ -11,7 +11,7 @@ class GestionCursos:
     def __init__(self, root, ttk, messagebox):
         self.root = root
         self.root.title("Sistema de gestion academica")
-        self.root.geometry("900x550")
+        self.root.geometry("1200x800")
         self.root.config(bg="#f0f2f5")
 
         contenedor = tk.Frame(self.root, bg="#f0f2f5")
@@ -56,7 +56,6 @@ class GestionCursos:
         
         self.menu_cursos = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Segoe UI", 10))
         self.menu_cursos.add_command(label="Agregar Curso", command=lambda: self.agregar_curso())
-        self.menu_cursos.add_command(label="Listar Cursos", command=lambda: self._actualizar_contenido("Lista de Cursos"))
         self.menu_cursos.add_command(label="Asignar Horario", command=lambda: self.agregar_horario())
         self.menu_cursos.add_command(label="Estudiantes en Curso", command=lambda: self.consultar_estudiante_en_curso())
         self.menu_cursos.add_command(label="Consultar Horario", command=lambda: self.consultar_horario())
@@ -468,14 +467,13 @@ class GestionCursos:
         else:
             response = self.estudiante_controller.listar_estudiantes()
             
-        self.estudiantes =  ttk.Treeview(self.frame, columns=("Identificación", "Nombre", "Apellido", 'Fecha Nacimiento', 'Correo Personal', 'Correo Institucional'), show="headings")
+        self.estudiantes =  ttk.Treeview(self.frame, columns=("Identificación", "Nombre", "Apellido", 'Fecha Nacimiento', 'Correo Personal'), show="headings")
         self.estudiantes.heading("Identificación", text="Identificación")
         self.estudiantes.heading("Nombre", text="Nombre")
         self.estudiantes.heading("Apellido", text="Apellido")
         self.estudiantes.heading("Fecha Nacimiento", text="Fecha Nacimiento")
         self.estudiantes.heading("Correo Personal", text="Correo Personal")
-        self.estudiantes.heading("Correo Institucional", text="Correo Institucional")
-        self.estudiantes.grid(row=3, column=0, columnspan=2)
+        self.estudiantes.grid(row=3, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
             self.estudiantes.delete(item)
@@ -547,7 +545,7 @@ class GestionCursos:
             self.dataGrid.heading("nombreProfesor", text="Nombre")
             self.dataGrid.heading("correoInstitucional", text="Correo Institucional")
             self.dataGrid.heading("descripcionCurso", text="Descripción Curso")
-            self.dataGrid.grid(row=3, column=0, columnspan=2)
+            self.dataGrid.grid(row=3, column=0, columnspan=4)
         else:
             messagebox.showinfo("Consulta", "En el momento no se encuentran docentes registrados a un curso.")
         
@@ -734,7 +732,7 @@ class GestionCursos:
         self.estudiantes.heading("identificacion Estudiante", text="identificacion Estudiante")
         self.estudiantes.heading("Nombre Estudiante", text="Nombre Estudiante")
         self.estudiantes.heading("Correo Institucional", text="Correo Institucional")
-        self.estudiantes.grid(row=4, column=0, columnspan=2)
+        self.estudiantes.grid(row=5, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
             self.estudiantes.delete(item)
@@ -782,7 +780,7 @@ class GestionCursos:
         self.estudiantes.heading("Descripcion Curso", text="Descripcion Curso")
         self.estudiantes.heading("Hora Inicio", text="Hora Inicio")
         self.estudiantes.heading("Hora Fin", text="Hora Fin")
-        self.estudiantes.grid(row=4, column=0, columnspan=2)
+        self.estudiantes.grid(row=5, column=0, columnspan=4)
         
         for item in self.estudiantes.get_children():
             self.estudiantes.delete(item)
