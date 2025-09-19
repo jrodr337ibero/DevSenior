@@ -25,6 +25,5 @@ class CursoController:
     def cargar_drop_horas(self) -> list:
         return self.model.lista_horas()
     
-    
     def estudiante_en_curso(self):
         return self.model.estudiantes_en_curso_db()

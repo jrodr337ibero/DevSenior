@@ -29,36 +29,6 @@ class ProfesorModel:
                 "mensaje":str(e)
             }
     
-    def obtener_profesores(self):
-        query = "SELECT * FROM profesores"
-        cursor = self.connection.cursor(dictionary=True)
-        try:
-            cursor.execute(query)
-            return cursor.fetchall()
-        except Exception as e:
-            print(f"Error al obtener profesores: {e}")
-            return []
-    
-    def obtener_profesor_por_id(self, id_profesor):
-        query = "SELECT * FROM profesores WHERE id_profesor = %s"
-        cursor = self.connection.cursor(dictionary=True)
-        try:
-            cursor.execute(query, (id_profesor,))
-            return cursor.fetchone()
-        except Exception as e:
-            print(f"Error al obtener profesor: {e}")
-            return None
-    
-    def obtener_cursos_profesor(self, id_profesor):
-        query = "SELECT * FROM cursos WHERE id_profesor = %s"
-        cursor = self.connection.cursor(dictionary=True)
-        try:
-            cursor.execute(query, (id_profesor,))
-            return cursor.fetchall()
-        except Exception as e:
-            print(f"Error al obtener cursos del profesor: {e}")
-            return []
-        
     def lista_docentes(self):
         try:
             query = "SELECT idProfesor, nombreProfesor FROM profesores"
@@ -66,7 +36,7 @@ class ProfesorModel:
         except Exception as ex:
             print("Error en lista_docentes")
             
-    def consultar_docentes(self):
+    def consultar_docentes(self, nombre):
         try:
             self.cursor = EjecutarDb()
             query = """SELECT P.idProfesor, 
@@ -79,7 +49,12 @@ class ProfesorModel:
                               descripcionCurso
                         FROM Profesores P
                         JOIN Cursos C ON C.idProfesor = P.idProfesor"""
-            return self.cursor.consultar(query)
+            params = (nombre,)
+            if nombre is not None:
+                query = query + ' WHERE nombreProfesor = %s '
+                return self.cursor.consultar(query, params)
+            else:
+                return self.cursor.consultar(query)
         except Exception as ex:
             print("Error en consultar_docentes")
         

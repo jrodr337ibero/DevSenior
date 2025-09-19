@@ -1,11 +1,11 @@
 from view.gestion_cursos import GestionCursos
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 
 def main():
     root = tk.Tk()
-    GestionCursos(root, ttk, messagebox)
+    GestionCursos(root, ttk)
     root.mainloop()
 
 

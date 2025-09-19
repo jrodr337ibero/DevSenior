@@ -8,7 +8,7 @@ from controller.matricular_controller import MatriculaController
 from tkinter import messagebox
 
 class GestionCursos:
-    def __init__(self, root, ttk, messagebox):
+    def __init__(self, root, ttk):
         self.root = root
         self.root.title("Sistema de gestion academica")
         self.root.geometry("1200x800")
@@ -37,12 +37,8 @@ class GestionCursos:
         }
 
         tk.Button(menu_frame, text="Inicio", command=self.mostrar_inicio, **self.button_style).pack(fill="x", pady=2)
-
-        self.btn_cursos = tk.Button(menu_frame, text="Cursos", **self.button_style)
-        self.btn_cursos.pack(fill="x", pady=2)
-        self.btn_cursos.bind("<Button-1>", self.submenu_curso)
         
-        self.btn_estudiante = tk.Button(menu_frame, text="Estudiante", **self.button_style)
+        self.btn_estudiante = tk.Button(menu_frame, text="Estudiantes", **self.button_style)
         self.btn_estudiante.pack(fill="x", pady=2)
         self.btn_estudiante.bind("<Button-1>", self.submenu_estudiante)
         
@@ -50,13 +46,17 @@ class GestionCursos:
         self.btn_docente.pack(fill="x", pady=2)
         self.btn_docente.bind("<Button-1>", self.submenu_docente)
         
+        self.btn_cursos = tk.Button(menu_frame, text="Cursos", **self.button_style)
+        self.btn_cursos.pack(fill="x", pady=2)
+        self.btn_cursos.bind("<Button-1>", self.submenu_curso)
+        
         self.btn_matriculas = tk.Button(menu_frame, text="Matriculas", **self.button_style)
         self.btn_matriculas.pack(fill="x", pady=2)
         self.btn_matriculas.bind("<Button-1>", self.submenu_matriculas)
         
         self.menu_cursos = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Segoe UI", 10))
-        self.menu_cursos.add_command(label="Agregar Curso", command=lambda: self.agregar_curso())
-        self.menu_cursos.add_command(label="Asignar Horario", command=lambda: self.agregar_horario())
+        self.menu_cursos.add_command(label="Agregar curso", command=lambda: self.agregar_curso())
+        self.menu_cursos.add_command(label="Asignar horario", command=lambda: self.agregar_horario())
         self.menu_cursos.add_command(label="Estudiantes en Curso", command=lambda: self.consultar_estudiante_en_curso())
         self.menu_cursos.add_command(label="Consultar Horario", command=lambda: self.consultar_horario())
         
@@ -66,11 +66,11 @@ class GestionCursos:
 
         self.menu_docente = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Sego UI", 10))
         self.menu_docente.add_command(label="Agregar Docente", command=lambda: self.agregar_docentes())
-        self.menu_docente.add_command(label="Consultar Docente", command=lambda: self.consultar_docente())
+        self.menu_docente.add_command(label="Consultar docente asociados a un curso", command=lambda: self.consultar_docente())
         
         self.menu_matriculas = tk.Menu(self.root, tearoff=False, bg="white", fg="black", font=("Segoe UI", 10))
-        self.menu_matriculas.add_command(label="Matricular Estudiante", command=lambda: self.matricular_estudiante())
-        self.menu_matriculas.add_command(label="Eliminar Matriculas", command=lambda: self.eliminar_matriculas())
+        self.menu_matriculas.add_command(label="Matricular estudiante", command=lambda: self.matricular_estudiante())
+        self.menu_matriculas.add_command(label="Eliminar matriculas", command=lambda: self.eliminar_matriculas())
         
         tk.Button(menu_frame, text="Salir", command=self.root.destroy, **self.button_style).pack(fill="x", pady=2)
 
@@ -174,7 +174,7 @@ class GestionCursos:
             frame, text="Apellido:",
             bg="white", font=('Arial Narrow', 12, 'bold')
         )
-        label_apellido.grid(row=3, column=0, sticky="e", padx=(50, 10), pady=10)
+        label_apellido.grid(row=3, column=0, sticky="e", padx=(150, 10), pady=10)
 
         self.apellido_var = tk.StringVar()
         entry_apellido = tk.Entry(
@@ -200,7 +200,7 @@ class GestionCursos:
             frame, text="Correo personal:",
             bg="white", font=('Arial Narrow', 12, 'bold')
         )
-        label_correo_personal.grid(row=5, column=0, sticky="e", padx=(50, 10), pady=10)
+        label_correo_personal.grid(row=5, column=0, sticky="e", padx=(150, 10), pady=10)
 
         self.correo_personal_var = tk.StringVar()
         entry_correo_personal = tk.Entry(
@@ -213,7 +213,7 @@ class GestionCursos:
             frame, text="Correo Institucional:",
             bg="white", font=('Arial Narrow', 12, 'bold')
         )
-        label_correo_institucional.grid(row=6, column=0, sticky="e", padx=(50, 10), pady=10)
+        label_correo_institucional.grid(row=6, column=0, sticky="e", padx=(200, 50), pady=10)
 
         self.correo_institucional_var = tk.StringVar()
         entry_correo_institucional = tk.Entry(
@@ -508,18 +508,18 @@ class GestionCursos:
         )
         label.grid(row=0, column=0, columnspan=2, pady=(40))
         
-        label_identificacion = tk.Label(
-            self.frame, text="ID Docente:",
+        label_nombre = tk.Label(
+            self.frame, text="Nombre docente:",
             bg="white", font=('Arial Narrow', 12, 'bold')
         )
-        label_identificacion.grid(row=1, column=0, sticky="e", padx=(50, 10), pady=10)
+        label_nombre.grid(row=1, column=0, sticky="e", padx=(50, 10), pady=10)
         
-        self.identificacion_var = tk.StringVar()
-        entry_identificacion = tk.Entry(
-            self.frame, textvariable=self.identificacion_var,
+        self.nombre_var = tk.StringVar()
+        entry_nombre = tk.Entry(
+            self.frame, textvariable=self.nombre_var,
             font=('Arial', 11), width=40
         )
-        entry_identificacion.grid(row=1, column=1, padx=(10, 50), pady=10, sticky="w")
+        entry_nombre.grid(row=1, column=1, padx=(10, 50), pady=10, sticky="w")
         
         self.boton_consultar = tk.Button(
             self.frame,
@@ -535,10 +535,10 @@ class GestionCursos:
                 
     def data_grid_mostrar_docente(self):
     
-        identificacion = self.identificacion_var.get()
-        print(identificacion)
-        if identificacion != '':
-            response = self.profesor_controller.consultar_docente_curso()
+        nombre = self.nombre_var.get()
+        print(nombre)
+        if nombre != '':
+            response = self.profesor_controller.consultar_docente_curso(nombre)
         else:
             response = self.profesor_controller.consultar_docente_curso()
             

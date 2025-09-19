@@ -6,9 +6,20 @@ class EstudianteController:
     def __init__(self):
         self.model = EstudianteModel()
     
-    def registrar_estudiante(self, identificacion, nombre, apellido, fecha_nacimiento, correo_personal, correo_institucional):
+    def registrar_estudiante(self, identificacion, 
+                             nombre, 
+                             apellido, 
+                             fecha_nacimiento, 
+                             correo_personal, 
+                             correo_institucional):
         id = None
-        insert_estudiante = Estudiante(id, identificacion, nombre, apellido, fecha_nacimiento, correo_personal, correo_institucional)
+        insert_estudiante = Estudiante(id, 
+                                       identificacion, 
+                                       nombre, 
+                                       apellido, 
+                                       fecha_nacimiento, 
+                                       correo_personal, 
+                                       correo_institucional)
         self.model = EstudianteModel(insert_estudiante)
         
         estudiante_id = self.model.crear_estudiante()

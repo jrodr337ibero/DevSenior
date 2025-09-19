@@ -6,18 +6,21 @@ class ProfesorController:
     def __init__(self):
         self.model = ProfesorModel()
     
-    def registrar_profesor(self, identificacionProfesor, nombreProfesor, apellidoProfesor, correoPersonal, 
+    def registrar_profesor(self, identificacionProfesor, 
+                           nombreProfesor, 
+                           apellidoProfesor, 
+                           correoPersonal, 
                            correoInstitucional, 
                            especialidad):
         try:
-            insert_estudiante = Profesor(None,
+            insert_profesor = Profesor(None,
                                      identificacionProfesor,
                                      nombreProfesor, 
                                      apellidoProfesor, 
                                      correoPersonal, 
                                      correoInstitucional, 
                                      especialidad)
-            self.model = ProfesorModel(insert_estudiante)
+            self.model = ProfesorModel(insert_profesor)
         
             response = self.model.crear_profesor()
             if response.get('estado'):
@@ -30,7 +33,7 @@ class ProfesorController:
     def cargar_drop_docente(self) -> list:
         return self.model.lista_docentes()
     
-    def consultar_docente_curso(self):
-        return self.model.consultar_docentes()
+    def consultar_docente_curso(self, nombre = None):
+        return self.model.consultar_docentes(nombre)
             
     
